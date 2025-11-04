@@ -1,86 +1,119 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:ecommerce/ecommerce/presentation/cubit/auth_cubit.dart';
+import 'package:ecommerce/ecommerce/presentation/cubit/auth_state.dart';
 import 'package:ecommerce/ecommerce/presentation/screens/home.dart';
 import 'package:ecommerce/ecommerce/presentation/widgets/custom_text_field.dart';
 import 'package:ecommerce/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
-  static const String userCredentialKey = 'usercredential';
+class Login extends StatelessWidget {
+  Login({super.key});
+
   @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
+  // ignore: override_on_non_overriding_member
   final TextEditingController emailController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Login'), backgroundColor: Color(0xFFB2BACD)),
-      body: Container(
-        color: Colors.white,
-        child: Center(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset("assets/images/login1.jpg", height: 200),
-                SizedBox(height: 10),
-                CustomTextField(
-                  hintText: "Email",
-                  prefixIcon: Icons.email,
-                  cont: emailController,
-                  validat: (email) {
-                    if (email!.contains("@") && email.contains(".")) {
-                      return null;
-                    }
-                    return 'Please enter a valid email';
-                  },
-                ),
-                CustomTextField(
-                  hintText: "Password",
-                  prefixIcon: Icons.lock,
-                  suffixIcon: Icons.remove_red_eye,
-                  isPassword: true,
-                  cont: passwordController,
-                  validat: (password) {
-                    if (password!.length >= 8) return null;
-                    return 'Please enter at least 8 characters';
-                  },
-                ),
-                SizedBox(height: 10),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, Routes.signup);
-                  },
-                  child: Text(
-                    "You dont have account ?",
-                    style: TextStyle(color: Colors.black),
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthSuccessState) {
+          // Save user email to shared preferences
+          //  loginUser(state.userEmail).then((_) {
+          // Navigate to Home screen after saving
+          Navigator.pushReplacementNamed(context, Routes.home);
+          // }
+          //  );
+        } else if (state is AuthErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(state.error),
+              duration: Duration(seconds: 1),
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Login'),
+          backgroundColor: Color(0xFFB2BACD),
+        ),
+        body: Container(
+          color: Colors.white,
+          child: Center(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/images/login1.jpg", height: 200),
+                  SizedBox(height: 10),
+                  CustomTextField(
+                    hintText: "Email",
+                    prefixIcon: Icons.email,
+                    cont: emailController,
+                    validat: (email) {
+                      if (email!.contains("@") && email.contains(".")) {
+                        return null;
+                      }
+                      return 'Please enter a valid email';
+                    },
                   ),
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFB2BACD),
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    textStyle: TextStyle(fontSize: 20),
+                  CustomTextField(
+                    hintText: "Password",
+                    prefixIcon: Icons.lock,
+                    suffixIcon: Icons.remove_red_eye,
+                    isPassword: true,
+                    cont: passwordController,
+                    validat: (password) {
+                      if (password!.length >= 8) return null;
+                      return 'Please enter at least 8 characters';
+                    },
                   ),
-                  onPressed: () {
-                    _login(context);
-                  },
-                  child: isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
-                      : Text('Login', style: TextStyle(color: Colors.white)),
-                ),
-              ],
+                  SizedBox(height: 10),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, Routes.signup);
+                    },
+                    child: Text(
+                      "You dont have account ?",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFB2BACD),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 50,
+                            vertical: 15,
+                          ),
+                          textStyle: TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          _login(context);
+                        },
+                        child: state is AuthLoadingState
+                            ? CircularProgressIndicator()
+                            : Text(
+                                'Login',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -89,20 +122,16 @@ class _LoginState extends State<Login> {
   }
 
   _login(BuildContext context) async {
-    setState(() {
-      isLoading = true;
-    });
     await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      isLoading = false;
-    });
+
     if (_formKey.currentState!.validate()) {
-     await loginUser(emailController.text);
-      // If the form is valid, proceed with the login
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home(name: emailController.text)));
+      String email = emailController.text;
+      String password = passwordController.text;
+
+      // Call login method from AuthCubit
+      context.read<AuthCubit>().login(email, password);
     } else {
-      // ignore: use_build_context_synchronously
+      // ignore: use_build_context
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
@@ -111,9 +140,7 @@ class _LoginState extends State<Login> {
       );
     }
   }
-  ///1-
-  loginUser(String email)async{
-    final prefs = await SharedPreferences.getInstance();
-     prefs.setString(Login.userCredentialKey, email);
-  }
+
+
+
 }
