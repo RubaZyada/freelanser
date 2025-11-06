@@ -28,7 +28,9 @@ class Login extends StatelessWidget {
           // Save user email to shared preferences
           //  loginUser(state.userEmail).then((_) {
           // Navigate to Home screen after saving
-          Navigator.pushReplacementNamed(context, Routes.home);
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) => Home(name: state.userEmail),
+          ));
           // }
           //  );
         } else if (state is AuthErrorState) {
