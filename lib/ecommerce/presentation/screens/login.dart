@@ -8,7 +8,6 @@ import 'package:ecommerce/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -17,7 +16,6 @@ class Login extends StatelessWidget {
   // ignore: override_on_non_overriding_member
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
