@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1023679998285",
+    "project_id": "freelanser-24cb4",
+    "storage_bucket": "freelanser-24cb4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023679998285:android:0a367ba00d172eb87bef04",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhNicGuzo_CedB7jLmLB2R2I3I2PKqxvA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
