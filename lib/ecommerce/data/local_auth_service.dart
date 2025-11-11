@@ -12,4 +12,5 @@ Future<void> loginUser(String email) async {
 }
 Future<void> signupUser(String email) async {
   prefs.setString(userCredentialKey, email);
-}}
+}
+}

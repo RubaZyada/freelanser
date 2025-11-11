@@ -25,7 +25,7 @@ class Login extends StatelessWidget {
         if (state is AuthSuccessState) {
          
           Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => Home(name: state.user.user!.displayName),
+            builder: (context) => Home(name: state.user.user!.email?? ''),
           ));
           // }
           //  );

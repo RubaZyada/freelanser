@@ -20,9 +20,12 @@ class Signup extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccessState) {
-          Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => Home(name: state.user.user!.email??''),
-          ));
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Home(name: state.user.user!.email ?? ''),
+            ),
+          );
         } else if (state is AuthErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -44,7 +47,6 @@ class Signup extends StatelessWidget {
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
-              
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -127,9 +129,12 @@ class Signup extends StatelessWidget {
                       onPressed: () {
                         _signup(context);
                       },
-                      child: Text(
-                        'Signup',
-                        style: TextStyle(color: Colors.white),
+                      child: BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          return state is AuthLoadingState
+                              ? CircularProgressIndicator()
+                              : Text("sign up");
+                        },
                       ),
                     ),
                   ],
