@@ -23,11 +23,9 @@ class Login extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccessState) {
-          // Save user email to shared preferences
-          //  loginUser(state.userEmail).then((_) {
-          // Navigate to Home screen after saving
+         
           Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => Home(name: state.userEmail),
+            builder: (context) => Home(name: state.user.user!.displayName),
           ));
           // }
           //  );
@@ -35,7 +33,7 @@ class Login extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.red,
-              content: Text(state.error),
+              content: Text(state.errorMessage),
               duration: Duration(seconds: 1),
             ),
           );

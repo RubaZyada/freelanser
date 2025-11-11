@@ -1,3 +1,4 @@
+import 'package:ecommerce/ecommerce/data/firebase_auth_service.dart';
 import 'package:ecommerce/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +40,7 @@ class BuildAppBar extends StatelessWidget implements PreferredSizeWidget{
             SizedBox(width: 10),
           IconButton(
             onPressed: () {
+              FirebaseAuthService.logout();
               Navigator.pushReplacementNamed(context, Routes.login);
             },
             icon: Icon(Icons.logout),

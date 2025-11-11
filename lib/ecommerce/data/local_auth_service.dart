@@ -1,7 +1,7 @@
-import 'package:ecommerce/ecommerce/presentation/screens/signup.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthService {
+class LocalAuthService {
  static const String userCredentialKey = 'usercredential';
 static late  SharedPreferences prefs;
 void initAuthService() async {

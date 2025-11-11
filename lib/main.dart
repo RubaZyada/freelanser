@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-void main() async {
+void main() async { 
   // استدعي هدا السطر عشان ال async in main
   WidgetsFlutterBinding.ensureInitialized();
 await Firebase.initializeApp(

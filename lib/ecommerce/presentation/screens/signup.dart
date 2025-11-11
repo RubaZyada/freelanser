@@ -21,13 +21,13 @@ class Signup extends StatelessWidget {
       listener: (context, state) {
         if (state is AuthSuccessState) {
           Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => Home(name: state.userEmail),
+            builder: (context) => Home(name: state.user.user!.email??''),
           ));
         } else if (state is AuthErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.red,
-              content: Text(state.error),
+              content: Text(state.errorMessage),
               duration: Duration(seconds: 1),
             ),
           );
