@@ -9,15 +9,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   Login({super.key});
 
   @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  @override
   // ignore: override_on_non_overriding_member
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  final TextEditingController passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+@override 
+void initState(){
+  super.initState();
+  context.read<AuthCubit>().checkIfLogin();
+ 
+}
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
@@ -25,7 +37,7 @@ class Login extends StatelessWidget {
         if (state is AuthSuccessState) {
          
           Navigator.pushReplacement(context, MaterialPageRoute(
-            builder: (context) => Home(name: state.user.user!.email?? ''),
+            builder: (context) => Home(name: state.user.email?? ''),
           ));
           // }
           //  );
@@ -138,7 +150,4 @@ class Login extends StatelessWidget {
       );
     }
   }
-
-
-
 }

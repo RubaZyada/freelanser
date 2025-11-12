@@ -23,7 +23,7 @@ class Signup extends StatelessWidget {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Home(name: state.user.user!.email ?? ''),
+              builder: (context) => Home(name: state.user.email ?? ''),
             ),
           );
         } else if (state is AuthErrorState) {

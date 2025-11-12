@@ -1,5 +1,7 @@
 import 'package:ecommerce/ecommerce/data/firebase_auth_service.dart';
+import 'package:ecommerce/ecommerce/presentation/screens/settings.dart';
 import 'package:ecommerce/routes.dart';
+//import 'package:ecommerce/routes.dart';
 import 'package:flutter/material.dart';
 
 
@@ -18,8 +20,10 @@ class BuildAppBar extends StatelessWidget implements PreferredSizeWidget{
         ),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.notifications_none_outlined),
+            onPressed: () {
+              
+            },
+            icon: Icon(Icons.settings_applications),
           ),
           SizedBox(width: 10),
           Container(

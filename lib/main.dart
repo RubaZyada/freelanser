@@ -2,6 +2,7 @@ import 'package:ecommerce/ecommerce/presentation/cubit/auth_cubit.dart';
 import 'package:ecommerce/ecommerce/presentation/screens/freelanser_details.dart';
 import 'package:ecommerce/ecommerce/presentation/screens/home.dart';
 import 'package:ecommerce/ecommerce/presentation/screens/login.dart';
+import 'package:ecommerce/ecommerce/presentation/screens/settings.dart';
 import 'package:ecommerce/ecommerce/presentation/screens/signup.dart';
 import 'package:ecommerce/routes.dart';
 import 'package:flutter/material.dart';
@@ -20,17 +21,18 @@ await Firebase.initializeApp(
   //runApp(const MyApp());
   runApp(
     BlocProvider(
-      create: (context) => AuthCubit(),
+      create: (context) => AuthCubit()..checkIfLogin(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
           Routes.login: (context) => Login(),
           Routes.home: (context) => Home(),
           Routes.signup: (context) => Signup(),
+          Routes.settings: (context) => Settings(),
 
           Routes.freelancerDetails: (context) => FreelancerDetails(),
         },
-        // shared preferences
+       
         home: Login(),
       ),
     ),
